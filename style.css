@@ -1,24 +1,80 @@
 body {
-  background-image: url('Paesaggio_avvolto_nella_nebbia.jpg');
+  background-image: url("450b0e1f9dad5fceed708ec1d036f4d3.jpg");
+  background-size: cover;
+  background-color: #000000;
   height: 100vh;
   font-family: system-ui;
 }
 
 #mainPlaylistContainer {
+  display: none;
+  justify-content: flex-start;
+  flex-direction: column;
+
+  flex-wrap: wrap;
+  align-items: flex-start;
   float: left;
   margin: auto;
-  width: 1480px;
+  width: 1720px;
   height: 1000px;
   padding: 20px;
   color: rgb(255, 255, 255);
   border: 1px solid white;
+  overflow: scroll;
+}
+
+#mainPlaylistContainer::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 #UserUiBar {
   border: 1px solid white;
   margin-bottom: 10px;
-  width: 1470px;
+  width: 1720px;
   padding: 20px;
-  height: 200px;
+  height: 140px;
+}
+#logInErrorMessage {
+  color: white;
+  text-align: center;
+}
+#logInUsernameInput {
+  margin: 35px;
+  height: 30px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  font-size: 20px;
+  width: 300px;
+}
+#logInPasswordInput {
+  margin: 35px;
+  font-size: 20px;
+  height: 30px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  width: 300px;
+}
+#logInButton {
+  margin: 35px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  font-size: 20px;
+  height: 30px;
+  width: 306px;
+}
+#logInContainer {
+  margin: auto;
+  margin-top: 300px;
+  background-color: #252525;
+  width: 380px;
+  height: 300px;
+  box-shadow: 0px 0px 10px 0px rgb(255, 255, 255);
+  border-radius: 15px;
+}
+#addSongTitle {
+  margin: 0px;
+}
+#createPlaylistTitle {
+  margin: 0px;
 }
 #accountDetailsIcon {
   width: 60px;
@@ -28,7 +84,7 @@ body {
   margin-right: 30px;
 }
 #accountDetailsUsernameDisplay {
-  margin: 10px;
+  margin: 0px;
   color: white;
 }
 #accountDetails {
@@ -39,7 +95,7 @@ body {
   background-color: rgb(28, 28, 28);
   box-shadow: 0px 0px 10px 0px rgb(255, 255, 255);
   border-radius: 15px;
-  width: 250px;
+  width: 300px;
   height: 110px;
 }
 #addSong {
@@ -49,9 +105,18 @@ body {
   box-shadow: 0px 0px 10px 0px rgb(255, 255, 255);
   background-color: rgb(28, 28, 28);
   border-radius: 15px;
-  width: 270px;
-  height: 110px;;
-  margin-right: 20px;
+  width: 300px;
+  height: 110px;
+  margin-right: 60px;
+}
+#accountDetailsDisplayCon {
+  display: none;
+}
+#addSongDisplayCon {
+  display: none;
+}
+#createPlaylistDisplayCon {
+  display: none;
 }
 #createPlaylist {
   margin-left: 2px;
@@ -61,45 +126,56 @@ body {
   background-color: rgb(28, 28, 28);
   box-shadow: 0px 0px 10px 0px rgb(255, 255, 255);
   border-radius: 15px;
-  width: 270px;
-  height: 110px;;
+  width: 300px;
+  height: 110px;
+}
+#accountDetailsUsernameTitle {
+  color: white;
+  font-size: 35px;
+  margin: 0px;
+}
+#addSongImg {
+  mix-blend-mode: multiply;
+
+  width: 50px;
+  height: 20px;
 }
 #title {
-  color: white;
+  color: rgb(255, 255, 255);
   float: left;
-  margin:0px;
+  margin: 0px;
   font-size: 120px;
-  margin-left: 80px;
-  margin-right: 80px;
+  margin-left: 125px;
+  margin-right: 125px;
 }
 #appContainer {
   margin: auto;
 
-  width: 1513px;
+  width: 1720px;
 }
 
 .hoveredPlaylist {
-  width:700px;
-  height:700px;
+  width: 700px;
+  height: 700px;
 }
 .songsContainer {
   position: absolute;
   top: 20px;
   left: 0px;
   opacity: 1;
-width:100%;
-height:40px;
+  width: 100%;
+  height: 100%;
   transition: opacity 2s;
   overflow: scroll;
 }
-.songsContainer::-webkit-scrollbar { 
-  display: none;  /* Safari and Chrome */
+.songsContainer::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 .hidden {
   opacity: 0;
 }
 .playlistName {
-  font-size:20px;
+  font-size: 20px;
   margin-top: 5px;
   position: absolute;
 }
@@ -107,34 +183,46 @@ height:40px;
   margin-bottom: 20px;
   text-align: center;
   width: 100%;
+
+  float: left;
 }
 .PlaylistContainer {
   background-size: contain;
-  box-shadow: 0px 0px 10px 0px rgb(255, 255, 255);
-  position: relative;
-float:left;
-  width: 450px;
-  color: white;
-  height: 450px;
-  border-radius: 15px;
-  margin: 20px;
-  transition: 1s ease;
-  
 
+  position: relative;
+  float: left;
+  width: 425px;
+  height: 425px;
+  color: white;
+  align-items: center;
+  border-radius: 15px;
+
+  transition: 1s ease;
+  z-index: 1;
 }
 .blurred {
   filter: blur(15px);
-  filter: brightness(30%);
-
+  filter: brightness(40%);
 }
-
+.imageContainer {
+  border-radius: 15px;
+  height: 80%;
+  width: 80%;
+  transition: 1s;
+  position: relative;
+  display: block;
+  margin: auto;
+  margin-top: 42px;
+  box-shadow: 0px 0px 15px 0px rgb(255, 255, 255);
+}
 .playlistImage {
   border-radius: 15px;
   height: 100%;
-  width:100%;
-  transition: 1s ease;
-  overflow: scroll;
+  width: 100%;
+  transition: 1s;
+  position: relative;
 }
+
 .playlistSong {
   width: 400px;
   font-size: 17px;
@@ -146,4 +234,8 @@ float:left;
 }
 .playlistSong:visited {
   color: white;
+}
+.clickedContainer {
+  width: 650px;
+  height: 650px;
 }

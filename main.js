@@ -12,11 +12,20 @@ const mainPlaylistContainer = document.querySelector("#mainPlaylistContainer");
 const addSongPlaylistSelector = document.querySelector(
   "#addSongPlaylistSelector"
 );
-
+const logInButton = document.querySelector("#logInButton");
+const logInPasswordInput = document.querySelector("#logInPasswordInput");
+const logInUsernameInput = document.querySelector("#logInUsernameInput");
+const logInContainer = document.querySelector("#logInContainer");
+const logOutButton = document.querySelector("#logOutButton");
+const accountDetailsDisplayCon = document.querySelector(
+  "#accountDetailsDisplayCon"
+);
+const addSongDisplayCon = document.querySelector("#addSongDisplayCon");
+const createPlaylistDisplayCon = document.querySelector(
+  "#createPlaylistDisplayCon"
+);
 //Account and Data Functions
-const demoAccountData = [];
-
-let currentAccountArrayOfPlaylistObjects = [
+const demoAccountData = [
   {
     playlistName: "Ethereal Momentum",
     Image:
@@ -51,6 +60,7 @@ let currentAccountArrayOfPlaylistObjects = [
     songs: [],
   },
 ];
+let currentAccountArrayOfPlaylistObjects = [];
 
 class playlist {
   constructor(playlistName, imgPath) {
@@ -152,61 +162,87 @@ async function addingSong() {
   songUrlInput.value = "";
   addSongPlaylistSelector.value = "Playlist";
 }
+//logging In/out
+
+function loggingInUpdateCurrentAccount() {
+  if (logInUsernameInput.value == "1" && logInPasswordInput.value == "1") {
+    currentAccountArrayOfPlaylistObjects = demoAccountData;
+  } else console.log("wrong");
+}
+function loggingOutUpdateCurrentAccount() {
+  currentAccountArrayOfPlaylistObjects = "";
+}
 //Changin UI/Display Functions
 
 function updateDashboardUI() {
-  addSongPlaylistSelector.innerHTML = "<option>Playlist</option>";
-  currentAccountArrayOfPlaylistObjects.forEach((playlist) => {
-    addSongPlaylistSelector.add(
-      new Option(playlist.playlistName, playlist.playlistName)
-    );
-  });
-
-  let string = ``;
-
-  currentAccountArrayOfPlaylistObjects.forEach((playlist) => {
-    string += `<div class="PlaylistContainer"id="${playlist.playlistName}"><img class = 'playlistImage'src="${playlist.Image}"><div class="playlistName">${playlist.playlistName}</div><div  class = 'hidden songsContainer'>`;
-
-    for (let i = 0; i < playlist.songs.length; i++) {
-      string += `<div class="playlistsongContainer"><a class='playlistSong' target="_blank"   href='${playlist.songs[i].songLink}'> ${playlist.songs[i].songName}</a></div>`;
-    }
-
-    string += "</div></div>";
-  });
-  mainPlaylistContainer.innerHTML = string;
-
-  document.querySelectorAll(".PlaylistContainer").forEach((playlist) => {
-    playlist.addEventListener("mouseenter", (e) => {
-      if (e.target.classList.contains("PlaylistContainer")) {
-        let target = e.target;
-        let image = target.querySelector(".playlistImage");
-        let song = target.querySelector(".songsContainer");
-        let playlistName = target.querySelector(".playlistName");
-        playlistName.style.display = "none";
-        target.style.width = "490px";
-        target.style.height = "490px";
-        target.style.margin = "0px";
-        image.classList.toggle("blurred");
-        song.classList.toggle("hidden");
-      } else false;
+  if (currentAccountArrayOfPlaylistObjects.length != 0) {
+    mainPlaylistContainer.style.display = "block";
+    logInContainer.style.display = "none";
+    accountDetailsDisplayCon.style.display = "block";
+    addSongDisplayCon.style.display = "block";
+    createPlaylistDisplayCon.style.display = "block";
+    addSongPlaylistSelector.innerHTML = "<option>Playlist</option>";
+    currentAccountArrayOfPlaylistObjects.forEach((playlist) => {
+      addSongPlaylistSelector.add(
+        new Option(playlist.playlistName, playlist.playlistName)
+      );
     });
-    playlist.addEventListener("mouseleave", (e) => {
-      if (e.target.classList.contains("PlaylistContainer")) {
-        let target = e.target;
-        let image = target.querySelector(".playlistImage");
-        let song = target.querySelector(".songsContainer");
-        let playlistName = target.querySelector(".playlistName");
-        playlistName.style.display = "";
-        target.style.margin = "20px";
-        target.style.width = "450px";
-        target.style.height = "450px";
-        image.classList.toggle("blurred");
-        song.classList.toggle("hidden");
-      } else false;
+
+    let string = ``;
+
+    currentAccountArrayOfPlaylistObjects.forEach((playlist) => {
+      string += `<div class="PlaylistContainer"id="${playlist.playlistName}"><div class='imageContainer'><img class = 'playlistImage'src="${playlist.Image}"><div class="playlistName">${playlist.playlistName}</div><div  class = 'hidden songsContainer'>`;
+
+      for (let i = 0; i < playlist.songs.length; i++) {
+        string += `<div class="playlistsongContainer"><a class='playlistSong' target="_blank"   href='${playlist.songs[i].songLink}'> ${playlist.songs[i].songName}</a></div>`;
+      }
+
+      string += "</div></div></div>";
     });
-  });
+    mainPlaylistContainer.innerHTML = string;
+
+    document.querySelectorAll(".PlaylistContainer").forEach((playlist) => {
+      playlist.addEventListener("mouseenter", (e) => {
+        if (e.target.classList.contains("PlaylistContainer")) {
+          let target = e.target;
+          let song = target.querySelector(".songsContainer");
+          let image = target.querySelector(".playlistImage");
+          let imageContainer = target.querySelector(".imageContainer");
+
+          imageContainer.style.height = "100%";
+          imageContainer.style.width = "100%";
+          imageContainer.style.marginTop = "0";
+          image.classList.toggle("blurred");
+          song.classList.toggle("hidden");
+        } else false;
+      });
+      playlist.addEventListener("mouseleave", (e) => {
+        if (e.target.classList.contains("PlaylistContainer")) {
+          let target = e.target;
+
+          let song = target.querySelector(".songsContainer");
+          let image = target.querySelector(".playlistImage");
+          let imageContainer = target.querySelector(".imageContainer");
+
+          imageContainer.style.height = "80%";
+          imageContainer.style.width = "80%";
+          imageContainer.style.marginTop = "42px";
+          image.classList.toggle("blurred");
+          song.classList.toggle("hidden");
+        } else false;
+      });
+    });
+  } else {
+    mainPlaylistContainer.style.display = "none";
+    logInContainer.style.display = "block";
+    accountDetailsDisplayCon.style.display = "none";
+    addSongDisplayCon.style.display = "none";
+    createPlaylistDisplayCon.style.display = "none";
+    addSongPlaylistSelector.innerHTML = "<option>Playlist</option>";
+  }
 }
-
+function logInUiChange() {}
+function logOutUiChange() {}
 //allPlaylist.addEventListener("mouseover", (e) => {
 //firstsongs.classList.toggle("hidden");
 //playListImage.classList.toggle("blurred");
@@ -225,6 +261,14 @@ function init() {
   playlistCreateButton.addEventListener("click", async () => {
     await createPlaylist();
 
+    updateDashboardUI();
+  });
+  logInButton.addEventListener("click", () => {
+    loggingInUpdateCurrentAccount();
+    updateDashboardUI();
+  });
+  logOutButton.addEventListener("click", () => {
+    loggingOutUpdateCurrentAccount();
     updateDashboardUI();
   });
 }

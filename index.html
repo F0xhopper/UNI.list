@@ -7,16 +7,20 @@
     <div id="appContainer">
       <div id="UserUiBar">
 
-    <div id="accountDetails"><img id="accountDetailsIcon"  src='User-Account-Person-PNG-Photos.png'><h4 id='accountDetailsUsernameDisplay'>Username: DemoAccount123</h4></div>
+    <div id="accountDetails"><div id='accountDetailsDisplayCon'><img id="accountDetailsIcon"  src='User-Account-Person-PNG-Photos.png'><h1 id="accountDetailsUsernameTitle">Username</h1><h4 id='accountDetailsUsernameDisplay'>DemoAccount123</h4><button id="logOutButton">Log Out</button></div></div>
 
     <h1  id="title">UNI.list</h1>
-    <div id="addSong"><h1>ADD SONG</h1><select id="addSongPlaylistSelector"><option>Playlist</option></select><input id="songUrlInput" placeholder="Song URL"><button id="addSongButton">ADD </button></div>
-    <div id="createPlaylist"><h1>CREATE PLAYLIST</h1><input placeholder="Playlist Name"id='playlistNameInput'><input type='file'id='platylistImageInput'><button id="playlistCreateButton">CREATE</button></div>
-  </div>
-    <div id="mainPlaylistContainer">
+    <div id="addSong"><div id='addSongDisplayCon'><h1 id="addSongTitle">ADD SONG</h1><select id="addSongPlaylistSelector"><option>Playlist</option></select><input id="songUrlInput" placeholder="Song URL"><button id="addSongButton">ADD </button><img id='addSongImg'src='360_F_535241029_3A713Ecqzdvh9if3QLC6A1E9f32xBGzF (1).png'></div></div>
+    <div id="createPlaylist"><div id='createPlaylistDisplayCon'><h1 id="createPlaylistTitle">CREATE PLAYLIST</h1><input placeholder="Playlist Name"id='playlistNameInput'><input type='file'id='platylistImageInput'><button id="playlistCreateButton">CREATE</button></div></div></div>
+ 
+    <div id="mainPlaylistContainer"
+    >
  
 
-      </div></div>
     </div>
+    <div id='logInContainer'>  <input placeholder="Username"id=logInUsernameInput><input placeholder="Password"id=logInPasswordInput><button id="logInButton">LOG IN</button><h1 id="logInErrorMessage">Error Message</h1></div>
+</div></div>
+    </div>  </div></body>
   </body>
+
 </html> 
