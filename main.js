@@ -12,20 +12,28 @@ const mainPlaylistContainer = document.querySelector("#mainPlaylistContainer");
 const addSongPlaylistSelector = document.querySelector(
   "#addSongPlaylistSelector"
 );
+
 const logInButton = document.querySelector("#logInButton");
 const logInPasswordInput = document.querySelector("#logInPasswordInput");
 const logInUsernameInput = document.querySelector("#logInUsernameInput");
 const logInContainer = document.querySelector("#logInContainer");
 const logOutButton = document.querySelector("#logOutButton");
-const accountDetailsDisplayCon = document.querySelector(
-  "#accountDetailsDisplayCon"
+
+const logInBar = document.querySelector("#logInBar");
+const UserUiBar = document.querySelector("#UserUiBar");
+const logInErrorMessage = document.querySelector("#logInErrorMessage");
+const accountDetailsUsernameDisplay = document.querySelector(
+  "#accountDetailsUsernameDisplay"
 );
-const addSongDisplayCon = document.querySelector("#addSongDisplayCon");
-const createPlaylistDisplayCon = document.querySelector(
-  "#createPlaylistDisplayCon"
-);
+const imageInput = document.querySelector("#imageInput");
+const imageInputLabel = document.querySelector("#imageInputLabel");
 //Account and Data Functions
-const demoAccountData = [
+let loggedIn = false;
+let demoAccountLogIn = {
+  Username: "1",
+  Password: "1",
+};
+let demoAccountData = [
   {
     playlistName: "Ethereal Momentum",
     Image:
@@ -36,16 +44,13 @@ const demoAccountData = [
         songLink:
           "https://www.youtube.com/watch?v=DizySJ1eznw&ab_channel=hamadisloser",
       },
-      {
-        songName: "Agony - Yung Lean ( sped up )",
-        songLink:
-          "https://www.youtube.com/watch?v=DizySJ1eznw&ab_channel=hamadisloser",
-      },
-      {
-        songName: "Agony - Yung Lean ( sped up )",
-        songLink:
-          "https://www.youtube.com/watch?v=DizySJ1eznw&ab_channel=hamadisloser",
-      },
+    ],
+  },
+  {
+    playlistName: "Sorrowing",
+    Image:
+      "https://i.pinimg.com/564x/d3/99/d3/d399d349cb5f5d2d9d5823b6c689c6c5.jpg",
+    songs: [
       {
         songName: "Agony - Yung Lean ( sped up )",
         songLink:
@@ -54,9 +59,22 @@ const demoAccountData = [
     ],
   },
   {
+    playlistName: "AboveRain Tracks",
+    Image:
+      "https://i.pinimg.com/564x/7a/70/35/7a70358787a4232419935a902eb4dda0.jpg",
+    songs: [
+      {
+        songName: "Agony - Yung Lean ( sped up )",
+        songLink:
+          "https://www.youtube.com/watch?v=DizySJ1eznw&ab_channel=hamadisloser",
+      },
+    ],
+  },
+
+  {
     playlistName: "GrapInward",
     Image:
-      "https://i.pinimg.com/564x/56/a4/44/56a4441be348a477d43a3fb231050038.jpg",
+      "https://i.pinimg.com/564x/65/2d/fc/652dfc2577c38cbc10a51e3fddc37b54.jpg",
     songs: [],
   },
 ];
@@ -90,14 +108,17 @@ async function convertingInputedFileToDataURL(file) {
 }
 
 async function createPlaylist() {
-  var file = platylistImageInput.files[0];
+  var file = imageInput.files[0];
   await convertingInputedFileToDataURL(file).then((result) => {
     currentAccountArrayOfPlaylistObjects.unshift(
       new playlist(playlistNameInput.value, result)
     );
   });
+
   playlistNameInput.value = "";
-  platylistImageInput.value = "";
+  imageInput.value = "";
+  imageInputLabel.textContent = "Select Image";
+  imageInputLabel.style.marginLeft = "34px";
 }
 async function gettingYTSongFromUrl(enteredURl) {
   const requestUrl = `http://youtube.com/oembed?url=${enteredURl}&format=json`;
@@ -165,23 +186,44 @@ async function addingSong() {
 //logging In/out
 
 function loggingInUpdateCurrentAccount() {
-  if (logInUsernameInput.value == "1" && logInPasswordInput.value == "1") {
+  if (
+    logInUsernameInput.value == demoAccountLogIn.Username &&
+    logInPasswordInput.value == demoAccountLogIn.Password
+  ) {
+    loggedIn = true;
     currentAccountArrayOfPlaylistObjects = demoAccountData;
-  } else console.log("wrong");
+    logInPasswordInput.value = "";
+    logInUsernameInput.value = "";
+  } else {
+    logInPasswordInput.value = "";
+    logInUsernameInput.value = "";
+    logInContainer.style.height = "290px";
+    logInErrorMessage.style.display = "block";
+  }
 }
 function loggingOutUpdateCurrentAccount() {
+  loggedIn = false;
   currentAccountArrayOfPlaylistObjects = "";
+  logInContainer.style.height = "230px";
+  logInErrorMessage.style.display = "none";
 }
 //Changin UI/Display Functions
 
+function changeImageInputText() {
+  imageInputLabel.textContent = "Image Selected";
+  imageInputLabel.style.marginLeft = "24px";
+}
+
 function updateDashboardUI() {
-  if (currentAccountArrayOfPlaylistObjects.length != 0) {
+  if (loggedIn == true) {
     mainPlaylistContainer.style.display = "block";
     logInContainer.style.display = "none";
-    accountDetailsDisplayCon.style.display = "block";
-    addSongDisplayCon.style.display = "block";
-    createPlaylistDisplayCon.style.display = "block";
-    addSongPlaylistSelector.innerHTML = "<option>Playlist</option>";
+    logInBar.style.display = "none";
+    UserUiBar.style.display = "block";
+    addSongPlaylistSelector.innerHTML =
+      "<option disabled selected hidden>Playlist</option>";
+    accountDetailsUsernameDisplay.textContent = demoAccountLogIn.Username;
+    demoAccountData = currentAccountArrayOfPlaylistObjects;
     currentAccountArrayOfPlaylistObjects.forEach((playlist) => {
       addSongPlaylistSelector.add(
         new Option(playlist.playlistName, playlist.playlistName)
@@ -191,7 +233,7 @@ function updateDashboardUI() {
     let string = ``;
 
     currentAccountArrayOfPlaylistObjects.forEach((playlist) => {
-      string += `<div class="PlaylistContainer"id="${playlist.playlistName}"><div class='imageContainer'><img class = 'playlistImage'src="${playlist.Image}"><div class="playlistName">${playlist.playlistName}</div><div  class = 'hidden songsContainer'>`;
+      string += `<div class="PlaylistContainer"id="${playlist.playlistName}"><div class='imageContainer'><img class = 'playlistImage'src="${playlist.Image}"><div class="playlistName">${playlist.playlistName}</div><div  class = 'hidden songsContainer'><button class='deleteButton'>x</button><button class='shareButton'>    Copy</button>`;
 
       for (let i = 0; i < playlist.songs.length; i++) {
         string += `<div class="playlistsongContainer"><a class='playlistSong' target="_blank"   href='${playlist.songs[i].songLink}'> ${playlist.songs[i].songName}</a></div>`;
@@ -201,6 +243,43 @@ function updateDashboardUI() {
     });
     mainPlaylistContainer.innerHTML = string;
 
+    document.querySelectorAll(".deleteButton").forEach((button) => {
+      button.addEventListener("click", (e) => {
+        let songContainer = e.target.parentElement;
+        let playlist = songContainer.parentElement;
+        let playlistName = playlist.childNodes[1];
+        let playlistObject = (currentAccountArrayOfPlaylistObjects =
+          currentAccountArrayOfPlaylistObjects.filter(
+            (playlist) => playlist.playlistName !== playlistName.textContent
+          ));
+        updateDashboardUI();
+      });
+    });
+    document.querySelectorAll(".shareButton").forEach((button) => {
+      button.addEventListener("click", async (e) => {
+        let textToCopy = ``;
+        let songContainer = e.target.parentElement;
+        let allPlaylistsongContainer = songContainer.querySelectorAll(
+          ".playlistsongContainer"
+        );
+        allPlaylistsongContainer.forEach((songContainer) => {
+          textToCopy += songContainer.innerText;
+          textToCopy += " - ";
+          textToCopy += songContainer.lastChild.href;
+        });
+        navigator.clipboard
+          .writeText(textToCopy)
+          .then(() => {
+            e.target.textContent = "Copied";
+            setTimeout(() => {
+              e.target.textContent = "  Copy";
+            }, 2000);
+          })
+          .catch(() => {
+            alert("something went wrong");
+          });
+      });
+    });
     document.querySelectorAll(".PlaylistContainer").forEach((playlist) => {
       playlist.addEventListener("mouseenter", (e) => {
         if (e.target.classList.contains("PlaylistContainer")) {
@@ -235,14 +314,12 @@ function updateDashboardUI() {
   } else {
     mainPlaylistContainer.style.display = "none";
     logInContainer.style.display = "block";
-    accountDetailsDisplayCon.style.display = "none";
-    addSongDisplayCon.style.display = "none";
-    createPlaylistDisplayCon.style.display = "none";
+    logInBar.style.display = "block";
+    UserUiBar.style.display = "none";
     addSongPlaylistSelector.innerHTML = "<option>Playlist</option>";
   }
 }
-function logInUiChange() {}
-function logOutUiChange() {}
+
 //allPlaylist.addEventListener("mouseover", (e) => {
 //firstsongs.classList.toggle("hidden");
 //playListImage.classList.toggle("blurred");
@@ -271,5 +348,6 @@ function init() {
     loggingOutUpdateCurrentAccount();
     updateDashboardUI();
   });
+  imageInput.addEventListener("change", changeImageInputText);
 }
 init();
