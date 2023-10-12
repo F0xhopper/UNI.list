@@ -30,8 +30,8 @@ const imageInputLabel = document.querySelector("#imageInputLabel");
 //Account and Data Functions
 let loggedIn = false;
 let demoAccountLogIn = {
-  Username: "1",
-  Password: "1",
+  Username: "Andrew99",
+  Password: "8932",
 };
 let demoAccountData = [
   {
@@ -44,17 +44,78 @@ let demoAccountData = [
         songLink:
           "https://www.youtube.com/watch?v=DizySJ1eznw&ab_channel=hamadisloser",
       },
+      {
+        songName: "Alex G - Trash",
+        songLink:
+          "https://www.youtube.com/watch?v=nOUkqkojb14&ab_channel=Honza%C5%A0t%C4%9Bp%C3%A1n",
+      },
+      {
+        songName: "kilgore doubtfire - escape (slowed + reverb)",
+        songLink:
+          "https://www.youtube.com/watch?v=j7-jhWlOqqQ&ab_channel=skateboardk",
+      },
+      {
+        songName: "Overfloater",
+        songLink:
+          "https://open.spotify.com/track/1U8v17QBWhtJqLmJxk4Sr6?si=b5d34f9ce6164339",
+      },
+      {
+        songName: "Persuit Of Happiness(Nightmare)",
+        songLink:
+          "https://open.spotify.com/track/4kTLpAbhuEGHAAdDjOIWaa?si=4ba6398eeb4c4750",
+      },
     ],
   },
   {
     playlistName: "Sorrowing",
     Image:
-      "https://i.pinimg.com/564x/d3/99/d3/d399d349cb5f5d2d9d5823b6c689c6c5.jpg",
+      "https://i.pinimg.com/564x/03/ca/81/03ca811e499b039bed816a179082b556.jpg",
     songs: [
       {
-        songName: "Agony - Yung Lean ( sped up )",
+        songName: "LVL",
         songLink:
-          "https://www.youtube.com/watch?v=DizySJ1eznw&ab_channel=hamadisloser",
+          "https://open.spotify.com/track/787rCZF9i4L1cXGMkdyIk4?si=6fb2460427234afa",
+      },
+      {
+        songName: "Im God",
+        songLink:
+          "https://open.spotify.com/track/0FVuyC9RP5MACjp4lgU3qZ?si=8a07eee7271e467a",
+      },
+      {
+        songName: "You Could Mean Everything To Me",
+        songLink:
+          "https://soundcloud.com/iphigen/you-could-mean-everything-to-me",
+      },
+      {
+        songName: "I Know What It Feels Like (Headrush)",
+        songLink:
+          "https://soundcloud.com/agri222222222222/i-know-what-it-feels-like-headrush",
+      },
+      {
+        songName: "Above The Gasoline, Below The Clouds",
+        songLink:
+          "https://soundcloud.com/monker178/above-the-gasoline-below-the-clouds",
+      },
+      {
+        songName: "the lonely tree (slowed)",
+        songLink:
+          "https://www.youtube.com/watch?v=MxCrVTmGX1E&ab_channel=ciaffa-Topic",
+      },
+      {
+        songName: "Two Ribbons - Thomas Thatcher, Organ Tapes, Tek Lintowe",
+        songLink:
+          "https://soundcloud.com/thomas55350/two-ribbons-ft-organ-tapes-tek-lintowe",
+      },
+      {
+        songName: "User 2222 - Tending To The Earthworms In The Meadow",
+        songLink:
+          "https://soundcloud.com/curiosityshoppp/user-2222-tending-to-the-earthworms-in-the-meadow",
+      },
+      {
+        songName:
+          "PARAMORE X WALKING IN THE SNOW - bod [包家巷] (no longing home edit)",
+        songLink:
+          "https://soundcloud.com/baojiaxiang/paramore-x-walking-in-the-snow",
       },
     ],
   },
@@ -64,9 +125,19 @@ let demoAccountData = [
       "https://i.pinimg.com/564x/7a/70/35/7a70358787a4232419935a902eb4dda0.jpg",
     songs: [
       {
-        songName: "Agony - Yung Lean ( sped up )",
+        songName: "p o i s o n t r e e🌿 [slowed + reverb]",
         songLink:
-          "https://www.youtube.com/watch?v=DizySJ1eznw&ab_channel=hamadisloser",
+          "https://www.youtube.com/watch?v=_jHSy4fe75Q&ab_channel=blackk_pinkk",
+      },
+      {
+        songName: "Forget Me Nots - Clud Mix",
+        songLink:
+          "https://open.spotify.com/track/4bXF0ErXw6pcgFJTkYLQuy?si=f345b36f6fb34cfd",
+      },
+      {
+        songName: "slideshow audio pt.1",
+        songLink:
+          "https://www.youtube.com/watch?v=dmSW8vFh5aE&t=49s&ab_channel=Telnyashka",
       },
     ],
   },
@@ -75,7 +146,28 @@ let demoAccountData = [
     playlistName: "GrapInward",
     Image:
       "https://i.pinimg.com/564x/65/2d/fc/652dfc2577c38cbc10a51e3fddc37b54.jpg",
-    songs: [],
+    songs: [
+      {
+        songName: "QKThr",
+        songLink:
+          "https://www.youtube.com/watch?v=rp4vQjrBKBw&ab_channel=AphexTwin-Topic",
+      },
+      {
+        songName: "GodSpeed",
+        songLink:
+          "https://open.spotify.com/track/1HvkLRkaMOroP945YFLpAw?si=934f8cb2c95145c3",
+      },
+      {
+        songName: "Kids",
+        songLink:
+          "https://open.spotify.com/track/3pyyGVqWvRMq43qtJBzxe0?si=773fccf7f47a44f0",
+      },
+      {
+        songName: "DEMO COPLAS CAYAMBEÑAS Y MAS - DJ MISTICO PRO 2019",
+        songLink:
+          "https://soundcloud.com/dj-mistico/demo-coplas-cayambenas-y-mas-dj-mistico-pro-2019",
+      },
+    ],
   },
 ];
 let currentAccountArrayOfPlaylistObjects = [];
