@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig } from "/axios";
 
 const allPlaylist = document.querySelectorAll(".PlaylistContainer");
 const firstsongs = document.querySelector(".songsContainer");
