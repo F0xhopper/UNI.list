@@ -1,9 +1,8 @@
 body {
-  background-image: url("26380891109_316685db61_k.jpg");
+  background-image: url("Images/26380891109_316685db61_k.jpg");
   background-size: cover;
   background-color: #000000;
 
-  height: 100vh;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -268,6 +267,7 @@ option {
   font-size: 14px;
   border: 0px;
   color: rgba(194, 194, 194, 0.781);
+  transition: 6s;
 }
 .shareButton:hover {
   cursor: pointer;
@@ -286,16 +286,25 @@ option {
   height: 35px;
 }
 #logInTitle {
-  color: rgb(255, 255, 255);
   float: left;
-  height: 50px;
-  line-height: 120px;
-  margin: 0px;
-  font-size: 110px;
+  width: 432px;
+  margin-top: 10px;
   margin-left: 110px;
   margin-right: 110px;
 }
-
+.deleteSongButton {
+  background-color: transparent;
+  align-items: end;
+  opacity: 20%;
+  font-size: 14px;
+  color: white;
+  border: 0px transparent;
+  transition: 1s;
+}
+.deleteSongButton:hover {
+  cursor: pointer;
+  opacity: 80%;
+}
 #imageInputLabel {
   margin: 0px;
   margin-left: 34px;
@@ -345,13 +354,21 @@ option {
   width: 100%;
   height: 100%;
   transition: opacity 2s;
-  overflow: scroll;
+  overflow: hidden;
 }
 .songsContainer::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
 .hidden {
   opacity: 0;
+}
+.allScrollableSongsCon {
+  width: 100%;
+  height: 90%;
+  overflow: scroll;
+}
+.allScrollableSongsCon::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 .playlistName {
   font-size: 20px;

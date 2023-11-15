@@ -1,12 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-const allPlaylist = document.querySelectorAll(".PlaylistContainer");
-const firstsongs = document.querySelector(".songsContainer");
-const playListImage = document.querySelectorAll(".playlistImage");
 const addSongButton = document.querySelector("#addSongButton");
 const songUrlInput = document.querySelector("#songUrlInput");
 const playlistNameInput = document.querySelector("#playlistNameInput");
-const platylistImageInput = document.querySelector("#platylistImageInput");
 const playlistCreateButton = document.querySelector("#playlistCreateButton");
 const mainPlaylistContainer = document.querySelector("#mainPlaylistContainer");
 const addSongPlaylistSelector = document.querySelector(
@@ -30,8 +26,8 @@ const imageInputLabel = document.querySelector("#imageInputLabel");
 //Account and Data Functions
 let loggedIn = false;
 let demoAccountLogIn = {
-  Username: "Andrew99",
-  Password: "8932",
+  Username: "Foxhopper03",
+  Password: "1",
 };
 let demoAccountData = [
   {
@@ -169,9 +165,25 @@ let demoAccountData = [
       },
     ],
   },
+  {
+    playlistName: "RedCosmos",
+    Image:
+      "https://i.pinimg.com/564x/65/0a/3b/650a3b2a74f6c9660a85d5d2c99a6764.jpg",
+    songs: [
+      {
+        songName: "Until We Bleed ECLIPSE mix (Lykke Li X Celyn June X 703)",
+        songLink:
+          "https://soundcloud.com/neo_petal/until-we-bleed-eclipse-mix-lykke-li-celyn-june-703",
+      },
+      {
+        songName: "Makina X14",
+        songLink: "https://soundcloud.com/onnor2017/makina-x14",
+      },
+    ],
+  },
 ];
 let currentAccountArrayOfPlaylistObjects = [];
-
+//contstuctors
 class playlist {
   constructor(playlistName, imgPath) {
     this.playlistName = playlistName;
@@ -212,6 +224,7 @@ async function createPlaylist() {
   imageInputLabel.textContent = "Select Image";
   imageInputLabel.style.marginLeft = "34px";
 }
+//API calls to recieve song information
 async function gettingYTSongFromUrl(enteredURl) {
   const requestUrl = `http://youtube.com/oembed?url=${enteredURl}&format=json`;
   const result = await axios
@@ -266,9 +279,7 @@ async function addingSong() {
         return obj.playlistName == addSongPlaylistSelector.value;
       }
     );
-    console.log(selectedPlaylist);
     await processInputedURL(songUrlInput.value).then((result) => {
-      console.log(result);
       selectedPlaylist[0].songs.push(new song(result, songUrlInput.value));
     });
   }
@@ -305,13 +316,116 @@ function changeImageInputText() {
   imageInputLabel.textContent = "Image Selected";
   imageInputLabel.style.marginLeft = "24px";
 }
+function generatePlaylists() {
+  let string = ``;
 
+  currentAccountArrayOfPlaylistObjects.forEach((playlist) => {
+    string += `<div class="PlaylistContainer"id="${playlist.playlistName}"><div class='imageContainer'><img class = 'playlistImage'src="${playlist.Image}"><div class="playlistName">${playlist.playlistName}</div><div  class = 'hidden songsContainer'><button class='deleteButton'>x</button><button class='shareButton'>    Copy</button><div class='allScrollableSongsCon'>`;
+
+    for (let i = 0; i < playlist.songs.length; i++) {
+      string += `<div class="playlistsongContainer"><a class='playlistSong' target="_blank"   href='${playlist.songs[i].songLink}'> ${playlist.songs[i].songName}</a><button class='deleteSongButton'>x</button></div>`;
+    }
+
+    string += "</div></div></div></div>";
+  });
+  mainPlaylistContainer.innerHTML = string;
+}
+function makePlaylistButtonsFunctional() {
+  document.querySelectorAll(".deleteButton").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      let songContainer = e.target.parentElement;
+      let playlist = songContainer.parentElement;
+      let playlistName = playlist.childNodes[1];
+      let playlistObject = (currentAccountArrayOfPlaylistObjects =
+        currentAccountArrayOfPlaylistObjects.filter(
+          (playlist) => playlist.playlistName !== playlistName.textContent
+        ));
+      updateDashboardUI();
+    });
+  });
+  document.querySelectorAll(".deleteSongButton").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      let songContainer = e.target.parentElement;
+      let songname = songContainer.childNodes[0].textContent.trim();
+      let songname2 = songContainer.parentElement;
+      let f = songname2.parentElement.parentElement;
+      let playlistName1 = f.childNodes[1].textContent;
+      let playlistSongs = currentAccountArrayOfPlaylistObjects.find(
+        (playlist) => {
+          return playlist.playlistName == playlistName1;
+        }
+      );
+      let arrayOfsongs = playlistSongs.songs;
+      let index = arrayOfsongs.findIndex((x) => x.songName == songname);
+      arrayOfsongs = arrayOfsongs.splice(index, 1);
+      updateDashboardUI();
+    });
+  });
+  document.querySelectorAll(".shareButton").forEach((button) => {
+    button.addEventListener("click", async (e) => {
+      let textToCopy = ``;
+      let songContainer = e.target.parentElement;
+      let allPlaylistsongContainer = songContainer.querySelectorAll(
+        ".playlistsongContainer"
+      );
+      allPlaylistsongContainer.forEach((songContainer) => {
+        textToCopy += songContainer.innerText;
+        textToCopy += " - ";
+        textToCopy += songContainer.lastChild.href;
+      });
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => {
+          e.target.textContent = "Copied";
+          setTimeout(() => {
+            e.target.textContent = "  Copy";
+          }, 2000);
+        })
+        .catch(() => {
+          alert("something went wrong");
+        });
+    });
+  });
+}
+function changeSizeOnHoversedPlaylist() {
+  document.querySelectorAll(".PlaylistContainer").forEach((playlist) => {
+    playlist.addEventListener("mouseenter", (e) => {
+      if (e.target.classList.contains("PlaylistContainer")) {
+        let target = e.target;
+        let song = target.querySelector(".songsContainer");
+        let image = target.querySelector(".playlistImage");
+        let imageContainer = target.querySelector(".imageContainer");
+
+        imageContainer.style.height = "100%";
+        imageContainer.style.width = "100%";
+        imageContainer.style.marginTop = "0";
+        image.classList.toggle("blurred");
+        song.classList.toggle("hidden");
+      } else false;
+    });
+    playlist.addEventListener("mouseleave", (e) => {
+      if (e.target.classList.contains("PlaylistContainer")) {
+        let target = e.target;
+
+        let song = target.querySelector(".songsContainer");
+        let image = target.querySelector(".playlistImage");
+        let imageContainer = target.querySelector(".imageContainer");
+
+        imageContainer.style.height = "80%";
+        imageContainer.style.width = "80%";
+        imageContainer.style.marginTop = "42px";
+        image.classList.toggle("blurred");
+        song.classList.toggle("hidden");
+      } else false;
+    });
+  });
+}
 function updateDashboardUI() {
   if (loggedIn == true) {
-    mainPlaylistContainer.style.display = "block";
+    mainPlaylistContainer.style.display = "inline-block";
     logInContainer.style.display = "none";
     logInBar.style.display = "none";
-    UserUiBar.style.display = "block";
+    UserUiBar.style.display = "inline-block";
     addSongPlaylistSelector.innerHTML =
       "<option disabled selected hidden>Playlist</option>";
     accountDetailsUsernameDisplay.textContent = demoAccountLogIn.Username;
@@ -322,87 +436,9 @@ function updateDashboardUI() {
       );
     });
 
-    let string = ``;
-
-    currentAccountArrayOfPlaylistObjects.forEach((playlist) => {
-      string += `<div class="PlaylistContainer"id="${playlist.playlistName}"><div class='imageContainer'><img class = 'playlistImage'src="${playlist.Image}"><div class="playlistName">${playlist.playlistName}</div><div  class = 'hidden songsContainer'><button class='deleteButton'>x</button><button class='shareButton'>    Copy</button>`;
-
-      for (let i = 0; i < playlist.songs.length; i++) {
-        string += `<div class="playlistsongContainer"><a class='playlistSong' target="_blank"   href='${playlist.songs[i].songLink}'> ${playlist.songs[i].songName}</a></div>`;
-      }
-
-      string += "</div></div></div>";
-    });
-    mainPlaylistContainer.innerHTML = string;
-
-    document.querySelectorAll(".deleteButton").forEach((button) => {
-      button.addEventListener("click", (e) => {
-        let songContainer = e.target.parentElement;
-        let playlist = songContainer.parentElement;
-        let playlistName = playlist.childNodes[1];
-        let playlistObject = (currentAccountArrayOfPlaylistObjects =
-          currentAccountArrayOfPlaylistObjects.filter(
-            (playlist) => playlist.playlistName !== playlistName.textContent
-          ));
-        updateDashboardUI();
-      });
-    });
-    document.querySelectorAll(".shareButton").forEach((button) => {
-      button.addEventListener("click", async (e) => {
-        let textToCopy = ``;
-        let songContainer = e.target.parentElement;
-        let allPlaylistsongContainer = songContainer.querySelectorAll(
-          ".playlistsongContainer"
-        );
-        allPlaylistsongContainer.forEach((songContainer) => {
-          textToCopy += songContainer.innerText;
-          textToCopy += " - ";
-          textToCopy += songContainer.lastChild.href;
-        });
-        navigator.clipboard
-          .writeText(textToCopy)
-          .then(() => {
-            e.target.textContent = "Copied";
-            setTimeout(() => {
-              e.target.textContent = "  Copy";
-            }, 2000);
-          })
-          .catch(() => {
-            alert("something went wrong");
-          });
-      });
-    });
-    document.querySelectorAll(".PlaylistContainer").forEach((playlist) => {
-      playlist.addEventListener("mouseenter", (e) => {
-        if (e.target.classList.contains("PlaylistContainer")) {
-          let target = e.target;
-          let song = target.querySelector(".songsContainer");
-          let image = target.querySelector(".playlistImage");
-          let imageContainer = target.querySelector(".imageContainer");
-
-          imageContainer.style.height = "100%";
-          imageContainer.style.width = "100%";
-          imageContainer.style.marginTop = "0";
-          image.classList.toggle("blurred");
-          song.classList.toggle("hidden");
-        } else false;
-      });
-      playlist.addEventListener("mouseleave", (e) => {
-        if (e.target.classList.contains("PlaylistContainer")) {
-          let target = e.target;
-
-          let song = target.querySelector(".songsContainer");
-          let image = target.querySelector(".playlistImage");
-          let imageContainer = target.querySelector(".imageContainer");
-
-          imageContainer.style.height = "80%";
-          imageContainer.style.width = "80%";
-          imageContainer.style.marginTop = "42px";
-          image.classList.toggle("blurred");
-          song.classList.toggle("hidden");
-        } else false;
-      });
-    });
+    generatePlaylists();
+    makePlaylistButtonsFunctional();
+    changeSizeOnHoversedPlaylist();
   } else {
     mainPlaylistContainer.style.display = "none";
     logInContainer.style.display = "block";
@@ -411,17 +447,12 @@ function updateDashboardUI() {
     addSongPlaylistSelector.innerHTML = "<option>Playlist</option>";
   }
 }
-
-//allPlaylist.addEventListener("mouseover", (e) => {
-//firstsongs.classList.toggle("hidden");
-//playListImage.classList.toggle("blurred");
-//});
-//allPlaylist.addEventListener("mouseout", (e) => {
-//firstsongs.classList.toggle("hidden");
-//.classList.toggle("blurred");
-//});
-
+function setZoom() {
+  window.parent.document.body.style.zoom = 0.65;
+}
+//Event allocation
 function init() {
+  document.addEventListener("DOMContentLoaded", setZoom);
   window.addEventListener("load", updateDashboardUI);
   addSongButton.addEventListener("click", async () => {
     await addingSong();
